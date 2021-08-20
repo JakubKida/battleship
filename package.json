@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "parcel src/index.html",
     "build": "parcel build src/index.html",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "test-coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
