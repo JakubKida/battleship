@@ -2,7 +2,7 @@ import { randXY } from '../helpers/helpers';
 
 const Player = (type = 'human') => {
   const attack = (gameboard, x, y) => gameboard.receiveAttack(x, y);
-
+  const getType = () => type;
   const autoAttack = (gameboard) => {
     let [x, y] = randXY();
     while (!gameboard.receiveAttack(x, y)) {
@@ -10,7 +10,7 @@ const Player = (type = 'human') => {
     }
     return true;
   };
-  return { attack, autoAttack };
+  return { attack, autoAttack, getType };
 };
 
 export default Player;

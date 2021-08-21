@@ -11,7 +11,6 @@ describe('Player Factory', () => {
       let ship = new Ship('submarine');
       gameboard.placeShip(ship, 0, 0);
       expect(player.attack(gameboard, 0, 0)).toBe(true);
-      console.table(gameboard.board);
     });
 
     test('check if enemy receives the auto attack', () => {
@@ -20,7 +19,6 @@ describe('Player Factory', () => {
       let ship = new Ship('submarine');
       gameboard.placeShip(ship, 0, 0);
       expect(player.autoAttack(gameboard)).toBe(true);
-      console.table(gameboard.board);
     });
   });
 });

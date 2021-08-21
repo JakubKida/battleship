@@ -46,6 +46,13 @@ const Gameboard = () => {
     return true;
   };
 
+  const autoPlaceFleet = () => {
+    SHIP_TYPES.forEach((shipType) => {
+      if (!autoPlaceShip(new Ship(shipType))) return false;
+    });
+    return true;
+  };
+
   const areAllShipsSunk = () => {
     return placedShips.every((ship) => {
       return ship.isSunk();
@@ -85,6 +92,7 @@ const Gameboard = () => {
     areAllShipsPlaced,
     autoPlaceShip,
     areAllShipsSunk,
+    autoPlaceFleet,
   };
 };
 

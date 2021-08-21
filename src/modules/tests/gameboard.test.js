@@ -69,6 +69,7 @@ describe('Gameboard Factory', () => {
       let ship = new Ship('submarine');
       let ship2 = new Ship('battleship');
       let ship3 = new Ship('cruiser');
+
       expect(gameboard.autoPlaceShip(ship)).toBe(true);
       expect(gameboard.autoPlaceShip(ship2)).toBe(true);
       expect(gameboard.autoPlaceShip(ship3)).toBe(true);
@@ -77,10 +78,8 @@ describe('Gameboard Factory', () => {
     test('check auto placing whole fleet', () => {
       const gameboard = new Gameboard();
 
-      SHIP_TYPES.forEach((shipType) => {
-        expect(gameboard.areAllShipsPlaced()).toBe(false);
-        expect(gameboard.autoPlaceShip(new Ship(shipType))).toBe(true);
-      });
+      expect(gameboard.areAllShipsPlaced()).toBe(false);
+      expect(gameboard.autoPlaceFleet()).toBe(true);
       expect(gameboard.areAllShipsPlaced()).toBe(true);
     });
   });
