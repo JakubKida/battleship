@@ -1,6 +1,6 @@
 .board {
-  width: 30vw;
-  height: 30vw;
+  width: 20vw;
+  height: 20vw;
   /* background-color: red; */
   border: 2px solid black;
   background-color: black;
@@ -8,6 +8,61 @@
   grid-template-columns: repeat(8, 1fr);
   row-gap: 2px;
   column-gap: 2px;
+}
+
+#player-area-1 {
+  width: 50vw;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#player-area-2 {
+  width: 50vw;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.draggable-ships-area {
+  width: 30vw;
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  /* background-color: aqua; */
+}
+.draggable-ship {
+  /* width: 30vw; */
+  display: grid;
+  /* grid-template-columns: repeat(5, calc(20vh / 8)); */
+  /* display: flex; */
+  background-color: black;
+  border: 2px solid black;
+  grid-gap: 2px;
+  /* transform: rotate(90deg); */
+  /* background-color: black; */
+}
+.draggable-ship.carrier {
+  grid-template-columns: repeat(5, calc(20vh / 8));
+}
+.draggable-ship.battleship {
+  grid-template-columns: repeat(4, calc(20vh / 8));
+}
+.draggable-ship.cruiser,
+.draggable-ship.submarine {
+  grid-template-columns: repeat(3, calc(20vh / 8));
+}
+
+.draggable-ship.destroyer {
+  grid-template-columns: repeat(2, calc(20vh / 8));
+}
+
+.draggable-ship[data-orientation='vertical'] {
+  grid-template-columns: repeat(1, calc(20vh / 8));
 }
 
 #buttons {
@@ -20,6 +75,15 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+
+.ship-draggable-cell {
+  /* display: grid;s */
+  grid-template-rows: 2vw;
+  height: calc(20vh / 8);
+  width: calc(20vh / 8);
+  display: inline;
+  /* display: inline-block; */
 }
 
 .cell.hidden {
@@ -40,26 +104,45 @@
   background-color: blue;
 }
 
-.battleship {
+.ship-draggable-cell.battleship,
+.cell.battleship {
   background-color: aqua;
 }
 
-.cruiser {
+.ship-draggable-cell.cruiser,
+.cell.cruiser {
   background-color: red;
 }
 
-.submarine {
+.ship-draggable-cell.submarine,
+.cell.submarine {
   background-color: green;
 }
 
-.carrier {
+.ship-draggable-cell.carrier,
+.cell.carrier {
   background-color: yellow;
 }
 
-.destroyer {
+.ship-draggable-cell.destroyer,
+.cell.destroyer {
   background-color: blueviolet;
 }
 
 .cell:hover {
   opacity: 0.8;
+}
+
+.won {
+  width: 100%;
+  color: green;
+}
+
+.lost {
+  color: red;
+}
+
+#message-box {
+  text-align: center;
+  border: 2px solid black;
 }

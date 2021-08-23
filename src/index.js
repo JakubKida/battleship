@@ -1,6 +1,6 @@
 import Game from './modules/factories/game';
 
-const game = new Game('pc');
+const game = new Game('human');
 
 // game.displayGrids();
 game.initializeGame();

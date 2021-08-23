@@ -1,6 +1,7 @@
 import Gameboard from './gameboard';
 import Player from './player';
 import gameboardView from '../views/gameboardView';
+import Ship from './ship';
 
 const Game = (type) => {
   let playerOne = new Player();
@@ -10,20 +11,135 @@ const Game = (type) => {
   let p2Gameboard = new Gameboard();
 
   const initializeGame = () => {
-    p1Gameboard.autoPlaceFleet();
-    p2Gameboard.autoPlaceFleet();
-    displayGrids();
-    addCellEventListeners(2);
+    if (playerTwo.getType() === 'pc') {
+      p2Gameboard.autoPlaceFleet();
+    } else {
+      gameboardView.renderDraggableShips(2);
+    }
+    gameboardView.renderDraggableShips(1);
+    displayGridsPlaceStage(1);
   };
 
-  const displayGrids = () => {
+  //functions for dragging and placing ships
+  const displayGridsPlaceStage = (playerNr) => {
     gameboardView.renderGrid(1, p1Gameboard);
     gameboardView.renderGrid(2, p2Gameboard);
+    gameboardView.hideArea(playerNr === 1 ? 2 : 1);
+    gameboardView.showArea(playerNr === 1 ? 1 : 2);
+    addDragEventListeners(playerNr);
+  };
+
+  const addDragEventListeners = (playerNr) => {
+    gameboardView.displayMessage(`Player ${playerNr} : Place your fleet`);
+    let playerArea = document.querySelector(`#player-area-${playerNr}`);
+
+    let gridCells = playerArea.querySelectorAll(`#board-${playerNr} .cell`);
+    gridCells.forEach((cell) => {
+      cell.addEventListener('drop', drop);
+      cell.addEventListener('dragover', (e) => e.preventDefault());
+    });
+
+    let dragCells = playerArea.querySelectorAll('.ship-draggable-cell');
+    dragCells.forEach((dragCell) =>
+      dragCell.addEventListener('mouseover', storeClickedIndex)
+    );
+
+    let draggableShips = playerArea.querySelectorAll('.draggable-ship');
+    draggableShips.forEach((draggableShip) => {
+      draggableShip.draggable = true;
+      draggableShip.addEventListener('dragstart', dragStart);
+      draggableShip.addEventListener('dblclick', flipDraggableShip);
+    });
+
+    let notDraggableShips = document.querySelectorAll(
+      `#player-area-${playerNr === 1 ? 2 : 1} .draggable-ship`
+    );
+    notDraggableShips.forEach(
+      (notDraggableShip) => (notDraggableShip.draggable = false)
+    );
+  };
+
+  const dragStart = (event) => {
+    event.dataTransfer.setData('name', event.target.dataset.name);
+    event.dataTransfer.setData('index', event.target.dataset.clickedIndex);
+    event.dataTransfer.setData('orientation', event.target.dataset.orientation);
+  };
+
+  const flipDraggableShip = (event) => {
+    event.currentTarget.dataset.orientation =
+      event.currentTarget.dataset.orientation === 'vertical'
+        ? 'horizontal'
+        : 'vertical';
+  };
+
+  const storeClickedIndex = (event) => {
+    event.target.closest('.draggable-ship').dataset.clickedIndex =
+      event.target.dataset.index;
+  };
+
+  const drop = (event) => {
+    let boardToPlace;
+    let x = event.target.dataset.x;
+    let y = event.target.dataset.y;
+    const playerNr = event.target.closest('.board').dataset.id;
+    const type = event.dataTransfer.getData('name');
+    const orientation = event.dataTransfer.getData('orientation');
+    const indexToOffset = event.dataTransfer.getData('index');
+
+    //offset the index at which to place ship based on which index was clicked when dragging
+    if (orientation === 'horizontal') {
+      y -= indexToOffset;
+    } else {
+      x -= indexToOffset;
+    }
+
+    //chose the board to place ship to
+    if (playerNr === '1') {
+      boardToPlace = p1Gameboard;
+    } else {
+      boardToPlace = p2Gameboard;
+    }
+
+    //flip the ship if it has 'vertical' class
+    const shipToPlace = new Ship(type);
+    if (orientation === 'vertical') shipToPlace.flip();
+
+    //if placed correctly, remove the ship from draggable ones
+    if (boardToPlace.placeShip(shipToPlace, x, y)) {
+      const dragableToDelete = document.querySelector(
+        `#player-area-${playerNr} .${type}.draggable-ship`
+      );
+      dragableToDelete.remove();
+    }
+    //start the round if all ships are places on both boards
+    if (p1Gameboard.areAllShipsPlaced() && p2Gameboard.areAllShipsPlaced()) {
+      gameboardView.showArea(1);
+      gameboardView.showArea(2);
+      displayGridsPlayStage(1);
+    } else {
+      if (playerTwo.getType() !== 'pc') {
+        if (p1Gameboard.areAllShipsPlaced()) {
+          displayGridsPlaceStage(2);
+        } else {
+          displayGridsPlaceStage(1);
+        }
+      } else {
+        displayGridsPlaceStage(1);
+      }
+    }
+  };
+
+  // functions for playing the game (atacking stage)
+
+  const displayGridsPlayStage = (playerNr) => {
+    gameboardView.renderGrid(1, p1Gameboard);
+    gameboardView.renderGrid(2, p2Gameboard);
+    addCellEventListeners(playerNr);
   };
 
   const addCellEventListeners = (playerNr) => {
-    let cellsToAdd = document.querySelectorAll(`#board-${playerNr} > .cell`);
-    let cellsToRemove = document.querySelectorAll(
+    let cellsToRemove = document.querySelectorAll(`#board-${playerNr} > .cell`);
+    let cellsToAdd = document.querySelectorAll(
       `#board-${playerNr === 1 ? 2 : 1} > .cell`
     );
 
@@ -48,17 +164,24 @@ const Game = (type) => {
 
     if (playerTwo.getType() === 'pc') {
       playerTwo.autoAttack(p1Gameboard);
-      displayGrids();
-      addCellEventListeners(2);
+      displayGridsPlayStage(1);
     } else {
-      displayGrids();
-      addCellEventListeners(boardToAttack === '1' ? 2 : 1);
+      displayGridsPlayStage(boardToAttack === '1' ? 1 : 2);
     }
 
     if (p1Gameboard.areAllShipsSunk() || p2Gameboard.areAllShipsSunk()) {
-      resetGame();
-      initializeGame();
+      endGame();
     }
+  };
+
+  const endGame = () => {
+    let winner;
+    if (p1Gameboard.areAllShipsSunk()) {
+      winner = 1;
+    } else if (p2Gameboard.areAllShipsSunk()) {
+      winner = 2;
+    }
+    gameboardView.renderWinner(winner);
   };
 
   const resetGame = (type) => {
@@ -69,7 +192,7 @@ const Game = (type) => {
     initializeGame();
   };
 
-  return { playerOne, playerTwo, displayGrids, resetGame, initializeGame };
+  return { playerOne, playerTwo, resetGame, initializeGame };
 };
 
 export default Game;
