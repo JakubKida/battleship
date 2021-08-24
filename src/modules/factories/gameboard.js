@@ -60,20 +60,19 @@ const Gameboard = () => {
   };
 
   const receiveAttack = (x, y) => {
-    if (board[x][y] === null) {
-      board[x][y] = 'MISS';
-      return true;
+    if (x > 7 || x < 0 || y > 7 || y < 0) {
+      return [false, 'OUT'];
     }
     if (
       board[x][y] === 'HIT' ||
       board[x][y] === 'SUNK' ||
-      board[x][y] === 'MISS' ||
-      x > 7 ||
-      x < 0 ||
-      y > 7 ||
-      y < 0
+      board[x][y] === 'MISS'
     ) {
-      return false;
+      return [false, board[x][y]];
+    }
+    if (board[x][y] === null) {
+      board[x][y] = 'MISS';
+      return [true, board[x][y]];
     }
     if (
       typeof board[x][y] === 'object' &&
@@ -86,7 +85,7 @@ const Gameboard = () => {
       } else {
         board[x][y] = 'HIT';
       }
-      return true;
+      return [true, board[x][y]];
     }
   };
   return {
