@@ -66,6 +66,7 @@ const Gameboard = () => {
     }
     if (
       board[x][y] === 'HIT' ||
+      board[x][y] === 'SUNK' ||
       board[x][y] === 'MISS' ||
       x > 7 ||
       x < 0 ||
@@ -80,7 +81,11 @@ const Gameboard = () => {
       !Array.isArray(board[x][y])
     ) {
       board[x][y].ship.hit(board[x][y].index);
-      board[x][y] = 'HIT';
+      if (board[x][y].ship.isSunk()) {
+        board[x][y] = 'SUNK';
+      } else {
+        board[x][y] = 'HIT';
+      }
       return true;
     }
   };

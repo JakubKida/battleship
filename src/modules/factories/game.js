@@ -113,8 +113,6 @@ const Game = (type) => {
     }
     //start the round if all ships are places on both boards
     if (p1Gameboard.areAllShipsPlaced() && p2Gameboard.areAllShipsPlaced()) {
-      gameboardView.showArea(1);
-      gameboardView.showArea(2);
       displayGridsPlayStage(1);
     } else {
       if (playerTwo.getType() !== 'pc') {
@@ -132,12 +130,34 @@ const Game = (type) => {
   // functions for playing the game (atacking stage)
 
   const displayGridsPlayStage = (playerNr) => {
-    gameboardView.renderGrid(1, p1Gameboard);
-    gameboardView.renderGrid(2, p2Gameboard);
-    addCellEventListeners(playerNr);
+    const isPlayerOneHidden = playerNr !== 1 ? true : false;
+    const isPlayerTwoHidden = playerNr !== 2 ? true : false;
+
+    //render the move for the current player to see for a few seconds
+    gameboardView.renderGrid(1, p1Gameboard, !isPlayerOneHidden);
+    gameboardView.renderGrid(2, p2Gameboard, !isPlayerTwoHidden);
+
+    //then
+    if (playerTwo.getType() === 'pc') {
+      gameboardView.showArea(1);
+      gameboardView.showArea(2);
+      gameboardView.renderGrid(1, p1Gameboard, false);
+      gameboardView.renderGrid(2, p2Gameboard, true);
+      addCellEventListeners(playerNr);
+    } else {
+      setTimeout(() => {
+        gameboardView.showArea(1);
+        gameboardView.showArea(2);
+        gameboardView.renderPlayerChange(playerNr);
+        gameboardView.renderGrid(1, p1Gameboard, isPlayerOneHidden);
+        gameboardView.renderGrid(2, p2Gameboard, isPlayerTwoHidden);
+        addCellEventListeners(playerNr);
+      }, 1000);
+    }
   };
 
   const addCellEventListeners = (playerNr) => {
+    gameboardView.displayMessage(`Player ${playerNr}' turn`);
     let cellsToRemove = document.querySelectorAll(`#board-${playerNr} > .cell`);
     let cellsToAdd = document.querySelectorAll(
       `#board-${playerNr === 1 ? 2 : 1} > .cell`
@@ -162,15 +182,16 @@ const Game = (type) => {
       if (!playerOne.attack(p2Gameboard, x, y)) return;
     }
 
+    if (p1Gameboard.areAllShipsSunk() || p2Gameboard.areAllShipsSunk()) {
+      endGame();
+      return;
+    }
+
     if (playerTwo.getType() === 'pc') {
       playerTwo.autoAttack(p1Gameboard);
       displayGridsPlayStage(1);
     } else {
       displayGridsPlayStage(boardToAttack === '1' ? 1 : 2);
-    }
-
-    if (p1Gameboard.areAllShipsSunk() || p2Gameboard.areAllShipsSunk()) {
-      endGame();
     }
   };
 
@@ -186,9 +207,10 @@ const Game = (type) => {
 
   const resetGame = (type) => {
     playerOne = new Player();
-    playerTwo = new Player();
+    playerTwo = new Player(type);
     p1Gameboard = new Gameboard();
     p2Gameboard = new Gameboard();
+    gameboardView.clearGame();
     initializeGame();
   };
 

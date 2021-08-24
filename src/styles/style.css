@@ -1,3 +1,9 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
 .board {
   width: 20vw;
   height: 20vw;
@@ -93,17 +99,31 @@
 }
 
 .cell.miss {
-  background-color: rgb(88, 88, 88);
+  background-color: rgb(255, 0, 0);
 }
 
 .cell.hit {
-  background-color: rgb(0, 0, 0);
+  background-color: rgb(0, 255, 13);
+}
+
+.cell.sunk {
+  background-color: rgb(0, 255, 13);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cell.sunk::before {
+  position: fixed;
+  font-size: 20px;
+  text-align: center;
+  content: 'X';
 }
 
 .cell.ship {
   background-color: blue;
 }
-
+/* 
 .ship-draggable-cell.battleship,
 .cell.battleship {
   background-color: aqua;
@@ -127,7 +147,7 @@
 .ship-draggable-cell.destroyer,
 .cell.destroyer {
   background-color: blueviolet;
-}
+} */
 
 .cell:hover {
   opacity: 0.8;
@@ -145,4 +165,20 @@
 #message-box {
   text-align: center;
   border: 2px solid black;
+}
+
+.change-player-popup {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  background-color: bisque;
+}
+
+.change-player-message {
+  font-size: 30px;
 }

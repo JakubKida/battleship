@@ -1,19 +1,22 @@
-import { doc } from 'prettier';
 import { SHIP_LENGTHS, SHIP_TYPES } from '../helpers/helpers';
 
 const gameboardView = (() => {
-  const renderCell = (x, y, status) => {
+  const renderCell = (x, y, status, isHidden) => {
     let cell = document.createElement('div');
-    cell.classList.add(`cell`);
-    cell.classList.add(status);
+    // if (isHidden) {
+    //   switch (status) {
+    //   }
+    // }
+    cell.classList.add(`cell`, `${status}`);
     cell.dataset.x = x;
     cell.dataset.y = y;
     return cell;
   };
 
-  const renderGrid = (boardNr, gameboard) => {
+  const renderGrid = (boardNr, gameboard, isHidden) => {
     const board = document.querySelector(`#board-${boardNr}`);
     board.innerHTML = '';
+    board.style.display = 'grid';
     for (let i = 0; i <= 7; i++) {
       for (let j = 0; j <= 7; j++) {
         let status;
@@ -25,19 +28,23 @@ const gameboardView = (() => {
           case 'HIT':
             status = 'hit';
             break;
+          case 'SUNK':
+            status = 'sunk';
+            break;
           default:
             status = 'hidden';
             break;
         }
 
         if (
+          !isHidden &&
           typeof gameboard.board[i][j] === 'object' &&
           gameboard.board[i][j] !== null &&
           !Array.isArray(gameboard.board[i][j])
         )
           status = gameboard.board[i][j].ship.id;
         // let cell = document.createElement();
-        board.append(renderCell(i, j, status));
+        board.append(renderCell(i, j, status, isHidden));
       }
     }
   };
@@ -70,6 +77,13 @@ const gameboardView = (() => {
     // area.draggable = true;
 
     return area;
+  };
+
+  const clearGame = () => {
+    document.querySelector(`#board-1`).innerHTML = '';
+    document.querySelector(`#board-2`).innerHTML = '';
+    document.querySelector(`#dragable-ships-1`).innerHTML = '';
+    document.querySelector(`#dragable-ships-2`).innerHTML = '';
   };
 
   const renderWinner = (winner) => {
@@ -106,6 +120,19 @@ const gameboardView = (() => {
     areaToHide.style.display = 'flex';
   };
 
+  const renderPlayerChange = (playerNr) => {
+    let popup = document.createElement('div');
+    popup.classList.add('change-player-popup');
+    let message = document.createElement('div');
+    message.classList.add('change-player-message');
+    message.innerText = `Player ${playerNr}'s turn`;
+    popup.append(message);
+    popup.addEventListener('click', () => {
+      popup.remove();
+    });
+    document.querySelector('body').append(popup);
+  };
+
   // const cipherGrid = (gridNr) => {
   //   const board = document.querySelector(`#board-${gridNr}`);
   //   const cells = board.querySelectorAll('.cell');
@@ -122,6 +149,8 @@ const gameboardView = (() => {
     displayMessage,
     hideArea,
     showArea,
+    renderPlayerChange,
+    clearGame,
   };
 })();
 

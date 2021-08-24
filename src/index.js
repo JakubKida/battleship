@@ -1,8 +1,12 @@
 import Game from './modules/factories/game';
 
-const game = new Game('human');
-
-// game.displayGrids();
-game.initializeGame();
 let resetButton = document.querySelector('#reset-game');
-resetButton.addEventListener('click', game.resetGame);
+let selectType = document.querySelector('#game-type-selector');
+let game = new Game(selectType.value);
+
+game.initializeGame();
+
+resetButton.addEventListener('click', () => {
+  game = new Game(selectType.value);
+  game.resetGame(selectType.value);
+});
