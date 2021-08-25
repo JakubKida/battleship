@@ -1,24 +1,61 @@
+:root {
+  --base-board-size: 35vh;
+}
+
 html,
 body {
+  background-color: #3aafa9;
   margin: 0;
   padding: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+#buttons {
+  display: flex;
+  /* padding: 10px; */
 }
 
 .board {
-  width: 20vw;
-  height: 20vw;
+  width: var(--base-board-size);
+  height: var(--base-board-size);
+  padding: 10px;
+  border-radius: 5px;
   /* background-color: red; */
-  border: 2px solid black;
-  background-color: black;
+  border: 2px solid #2b7a77;
+  background-color: #2b7a77;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  row-gap: 2px;
-  column-gap: 2px;
+  row-gap: 3px;
+  column-gap: 3px;
+  box-shadow: 1px 1px 3px #17242a;
+}
+
+#reset-game,
+#game-type-selector {
+  background-color: #2b7a77;
+  border: 2px solid #def2f1;
+  padding: 10px;
+  border-radius: 15px;
+  font-size: 1rem;
+  color: #def2f1;
+  margin: 5px;
+}
+#reset-game:hover {
+  opacity: 0.8;
+}
+#reset-game:active {
+  color: #17242a;
+  background-color: #def2f1;
+}
+
+#game-type-selector {
+  background-color: #2b7a77;
 }
 
 #player-area-1 {
   width: 50vw;
-  height: 80vh;
+  /* height: 80vh; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,19 +63,24 @@ body {
 }
 #player-area-2 {
   width: 50vw;
-  height: 80vh;
+  /* height: 80vh; */
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 .draggable-ships-area {
-  width: 30vw;
+  /* width: 30vw; */
   height: 30vh;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: flex-start;
+  background-color: #2b7a77;
+  border-radius: 5px;
+  margin-top: 10px;
+  padding: 5px;
+  box-shadow: 1px 1px 3px #17242a;
   /* background-color: aqua; */
 }
 .draggable-ship {
@@ -46,32 +88,35 @@ body {
   display: grid;
   /* grid-template-columns: repeat(5, calc(20vh / 8)); */
   /* display: flex; */
-  background-color: black;
-  border: 2px solid black;
-  grid-gap: 2px;
+  background-color: #17242a;
+  border: 3px solid #17242a;
+  grid-gap: 3px;
+  margin-bottom: 3px;
   /* transform: rotate(90deg); */
   /* background-color: black; */
 }
 .draggable-ship.carrier {
-  grid-template-columns: repeat(5, calc(20vh / 8));
+  grid-template-columns: repeat(5, calc(var(--base-board-size) / 8));
 }
 .draggable-ship.battleship {
-  grid-template-columns: repeat(4, calc(20vh / 8));
+  grid-template-columns: repeat(4, calc(var(--base-board-size) / 8));
 }
 .draggable-ship.cruiser,
 .draggable-ship.submarine {
-  grid-template-columns: repeat(3, calc(20vh / 8));
+  grid-template-columns: repeat(3, calc(var(--base-board-size) / 8));
 }
 
 .draggable-ship.destroyer {
-  grid-template-columns: repeat(2, calc(20vh / 8));
+  grid-template-columns: repeat(2, calc(var(--base-board-size) / 8));
 }
 
 .draggable-ship[data-orientation='vertical'] {
-  grid-template-columns: repeat(1, calc(20vh / 8));
+  grid-template-columns: repeat(1, calc(var(--base-board-size) / 8));
 }
 
 #buttons {
+  display: flex;
+  /* padding: 10px; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -81,21 +126,27 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .ship-draggable-cell {
   /* display: grid;s */
   grid-template-rows: 2vw;
-  height: calc(20vh / 8);
-  width: calc(20vh / 8);
+  height: calc(var(--base-board-size) / 8);
+  width: calc(var(--base-board-size) / 8);
   display: inline;
+  background-color: #def2f1ed;
   /* display: inline-block; */
 }
 
+.cell {
+  position: relative;
+  background-color: #def2f1;
+}
 .cell.hidden {
   /* height: 10px; */
   /* width: 10px; */
-  background-color: white;
+  background-color: #17242a;
 }
 
 .cell.miss {
@@ -114,7 +165,7 @@ body {
 }
 
 .cell.sunk::before {
-  position: fixed;
+  position: absolute;
   font-size: 20px;
   text-align: center;
   content: 'X';
@@ -154,17 +205,46 @@ body {
 }
 
 .won {
-  width: 100%;
+  font-size: 2rem;
+  text-align: center;
   color: green;
 }
 
 .lost {
+  font-size: 2rem;
+  text-align: center;
   color: red;
 }
 
 #message-box {
   text-align: center;
-  border: 2px solid black;
+  color: white;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  border-radius: 5px;
+  font-size: 3vh;
+  background-color: #2b7a77;
+  /* width: 40vw; */
+  padding: 20px;
+  margin: 10px;
+}
+
+#message-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#player-1-label {
+  text-align: center;
+  color: white;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: #2b7a77;
+  width: 20vw;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 1px 1px 3px #17242a;
 }
 
 .change-player-popup {
@@ -176,9 +256,38 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 100;
-  background-color: bisque;
+  font-size: 10px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  color: white;
+  background-color: #17242a;
 }
 
 .change-player-message {
-  font-size: 30px;
+  font-size: 10vh;
+}
+
+@media screen and (max-width: 600px) {
+  #message-box {
+    display: none;
+  }
+  #player-area-1 {
+    order: 2;
+  }
+  #player-area-1 {
+    /* height: 100%; */
+    /* transform: rotate(180deg); */
+    /* margin: 20px; */
+  }
+
+  #player-area-2 {
+    order: 1;
+    transform: rotate(180deg);
+    margin: 20px;
+  }
+  :root {
+    --base-board-size: 30vh;
+  }
+  #boards {
+    flex-direction: column;
+  }
 }

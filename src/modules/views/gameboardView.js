@@ -49,8 +49,18 @@ const gameboardView = (() => {
     }
   };
 
+  const hideDraggableShipsArea = () => {
+    let shipsArea1 = document.querySelector(`#dragable-ships-1`);
+    let shipsArea2 = document.querySelector(`#dragable-ships-2`);
+    shipsArea1.style.display = 'none';
+    shipsArea2.style.display = 'none';
+    // document.documentElement.style.setProperty('--base-board-size', '40vh');
+  };
+
   const renderDraggableShips = (playerNr) => {
     let shipsArea = document.querySelector(`#dragable-ships-${playerNr}`);
+    // document.documentElement.style.setProperty('--base-board-size', '35vh');
+    shipsArea.style.display = 'flex';
     shipsArea.innerHTML = '';
     shipsArea.classList.add('draggable-ships-area');
     SHIP_TYPES.forEach((shipType) => {
@@ -151,6 +161,7 @@ const gameboardView = (() => {
     showArea,
     renderPlayerChange,
     clearGame,
+    hideDraggableShipsArea,
   };
 })();
 
