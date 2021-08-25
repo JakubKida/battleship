@@ -14,6 +14,13 @@ export const SHIP_LENGTHS = {
   destroyer: 2,
 };
 
+export const SURROUND_CHECKS = [
+  [-1, 0],
+  [0, -1],
+  [0, 1],
+  [1, 0],
+];
+
 export const randXY = () => {
   return [Math.floor(Math.random() * 7), Math.floor(Math.random() * 7)];
 };
