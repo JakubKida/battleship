@@ -113,6 +113,7 @@ const Game = (type) => {
     }
     //start the round if all ships are places on both boards
     if (p1Gameboard.areAllShipsPlaced() && p2Gameboard.areAllShipsPlaced()) {
+      gameboardView.hideDraggableShipsArea();
       displayGridsPlayStage(1);
     } else {
       if (playerTwo.getType() !== 'pc') {

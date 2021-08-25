@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="styles/style.css" />
+    <script src="DragDropTouch.js"></script>
     <script src="index.js" defer></script>
   </head>
   <body>
@@ -16,13 +17,17 @@
         <option value="pc">PC</option>
       </select>
     </div>
-    <div id="message-box">LL</div>
+    <div id="message-container">
+      <div id="message-box"></div>
+    </div>
     <div id="boards">
       <div id="player-area-1">
+        <div id="player-1-label">Player 1</div>
         <div id="board-1" class="board" data-id="1"></div>
         <div id="dragable-ships-1"></div>
       </div>
       <div id="player-area-2">
+        <div id="player-1-label">Player 2</div>
         <div id="board-2" class="board" data-id="2"></div>
         <div id="dragable-ships-2"></div>
       </div>
