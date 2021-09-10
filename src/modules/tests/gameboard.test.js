@@ -88,9 +88,9 @@ describe('Gameboard Factory', () => {
     let gameboard = new Gameboard();
     let ship = new Ship('submarine');
     gameboard.placeShip(ship, 4, 4);
-    expect(gameboard.receiveAttack(4, 4)).toBe(true);
-    expect(gameboard.receiveAttack(5, 4)).toBe(true);
-    expect(gameboard.receiveAttack(4, 4)).toBe(false);
+    expect(gameboard.receiveAttack(4, 4)).toEqual([true,'HIT']);
+    expect(gameboard.receiveAttack(5, 4)).toEqual([true,'MISS']);
+    expect(gameboard.receiveAttack(4, 4)).toEqual([false,'HIT']);
   });
 
   describe('check sunking', () => {

@@ -50,6 +50,7 @@ const Player = (type = 'human') => {
     } else {
       randomAttack(gameboard);
     }
+    return true;
   };
 
   const randomAttack = (gameboard) => {
