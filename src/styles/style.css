@@ -12,7 +12,6 @@ html, body{
 
 #buttons{
     display: flex;
-    /* padding: 10px; */
 }
 
 .board{
@@ -20,7 +19,6 @@ html, body{
     padding: 10px;
     width: var(--base-board-size);
     height: var(--base-board-size);
-    /* background-color: red; */
     border: 2px solid #2B7A77;
     border-radius: 5px;
     background-color: #2B7A77;
@@ -53,7 +51,6 @@ html, body{
 }
 
 #player-area-1{
-    /* height: 80vh; */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -61,7 +58,6 @@ html, body{
     width: 50vw;
 }
 #player-area-2{
-    /* height: 80vh; */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -80,20 +76,14 @@ html, body{
     border-radius: 5px;
     background-color: #2B7A77;
     box-shadow: 1px 1px 3px #17242A;
-    /* background-color: aqua; */
 }
 .draggable-ship{
-    /* width: 30vw; */
     display: grid;
     margin-bottom: 3px;
     border: 3px solid #17242A;
-    /* grid-template-columns: repeat(5, calc(20vh / 8)); */
-    /* display: flex; */
     background-color: #17242A;
 
     grid-gap: 3px;
-    /* transform: rotate(90deg); */
-    /* background-color: black; */
 }
 .draggable-ship.carrier{
     grid-template-columns: repeat(5, calc(var(--base-board-size) / 8));
@@ -115,7 +105,6 @@ html, body{
 
 #buttons{
     display: flex;
-    /* padding: 10px; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -133,10 +122,8 @@ html, body{
     width: calc(var(--base-board-size) / 8);
     height: calc(var(--base-board-size) / 8);
     background-color: #DEF2F1ED;
-    /* display: grid;s */
 
     grid-template-rows: 2vw;
-    /* display: inline-block; */
 }
 
 .cell{
@@ -144,8 +131,6 @@ html, body{
     background-color: #DEF2F1;
 }
 .cell.hidden{
-    /* height: 10px; */
-    /* width: 10px; */
     background-color: #17242A;
 }
 
@@ -174,31 +159,6 @@ html, body{
 .cell.ship{
     background-color: blue;
 }
-/* 
-.ship-draggable-cell.battleship,
-.cell.battleship {
-  background-color: aqua;
-}
-
-.ship-draggable-cell.cruiser,
-.cell.cruiser {
-  background-color: red;
-}
-
-.ship-draggable-cell.submarine,
-.cell.submarine {
-  background-color: green;
-}
-
-.ship-draggable-cell.carrier,
-.cell.carrier {
-  background-color: yellow;
-}
-
-.ship-draggable-cell.destroyer,
-.cell.destroyer {
-  background-color: blueviolet;
-} */
 
 .cell:hover{
     opacity: 0.8;
@@ -273,12 +233,6 @@ html, body{
     #player-area-1{
         order: 2;
     }
-    #player-area-1{
-        /* height: 100%; */
-        /* transform: rotate(180deg); */
-        /* margin: 20px; */
-    }
-
     #player-area-2{
         order: 1;
         margin: 20px;

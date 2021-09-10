@@ -1,6 +1,4 @@
 import { randXY, SURROUND_CHECKS } from '../helpers/helpers';
-import gameboardView from '../views/gameboardView';
-import Ship from './ship';
 
 const Player = (type = 'human') => {
   const previousMove = {

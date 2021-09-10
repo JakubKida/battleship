@@ -3,10 +3,7 @@ import { SHIP_LENGTHS, SHIP_TYPES } from '../helpers/helpers';
 const gameboardView = (() => {
   const renderCell = (x, y, status, isHidden) => {
     let cell = document.createElement('div');
-    // if (isHidden) {
-    //   switch (status) {
-    //   }
-    // }
+
     cell.classList.add(`cell`, `${status}`);
     cell.dataset.x = x;
     cell.dataset.y = y;
@@ -42,24 +39,24 @@ const gameboardView = (() => {
           gameboard.board[i][j] !== null &&
           !Array.isArray(gameboard.board[i][j])
         )
-          status = gameboard.board[i][j].ship.id;
-        // let cell = document.createElement();
+        
+        status = gameboard.board[i][j].ship.id;
         board.append(renderCell(i, j, status, isHidden));
       }
     }
   };
 
+  //hide draggable ships area after placing
   const hideDraggableShipsArea = () => {
     let shipsArea1 = document.querySelector(`#dragable-ships-1`);
     let shipsArea2 = document.querySelector(`#dragable-ships-2`);
     shipsArea1.style.display = 'none';
     shipsArea2.style.display = 'none';
-    // document.documentElement.style.setProperty('--base-board-size', '40vh');
   };
 
   const renderDraggableShips = (playerNr) => {
     let shipsArea = document.querySelector(`#dragable-ships-${playerNr}`);
-    // document.documentElement.style.setProperty('--base-board-size', '35vh');
+
     shipsArea.style.display = 'flex';
     shipsArea.innerHTML = '';
     shipsArea.classList.add('draggable-ships-area');
@@ -84,7 +81,6 @@ const gameboardView = (() => {
       cell.dataset.index = i;
       area.append(cell);
     }
-    // area.draggable = true;
 
     return area;
   };
@@ -98,22 +94,25 @@ const gameboardView = (() => {
 
   const renderWinner = (winner) => {
     const winBoard = document.querySelector(`#board-${winner}`);
-    winBoard.style.display = 'block';
     const winMessage = document.createElement('div');
+
     winMessage.innerText = `Player ${winner} won the game !`;
     winMessage.classList.add('won');
+    winBoard.style.display = 'block';
     winBoard.innerHTML = '';
     winBoard.append(winMessage);
 
     let loser = winner === 1 ? 2 : 1;
     const lostBoard = document.querySelector(`#board-${loser}`);
-    lostBoard.style.display = 'block';
     const loseMessage = document.createElement('div');
+
     loseMessage.innerHTML = `Player ${loser} lost the game !`;
     loseMessage.classList.add('lost');
+    lostBoard.style.display = 'block';
     lostBoard.innerHTML = '';
     lostBoard.append(loseMessage);
   };
+
   const displayMessage = (message) => {
     const messageElement = document.querySelector('#message-box');
     messageElement.innerHTML = '';
@@ -132,25 +131,18 @@ const gameboardView = (() => {
 
   const renderPlayerChange = (playerNr) => {
     let popup = document.createElement('div');
-    popup.classList.add('change-player-popup');
     let message = document.createElement('div');
+
     message.classList.add('change-player-message');
     message.innerText = `Player ${playerNr}'s turn`;
+    
+    popup.classList.add('change-player-popup');
     popup.append(message);
     popup.addEventListener('click', () => {
       popup.remove();
     });
     document.querySelector('body').append(popup);
   };
-
-  // const cipherGrid = (gridNr) => {
-  //   const board = document.querySelector(`#board-${gridNr}`);
-  //   const cells = board.querySelectorAll('.cell');
-
-  //   cells.forEach(cell=>{
-
-  //   })
-  // }
 
   return {
     renderGrid,
